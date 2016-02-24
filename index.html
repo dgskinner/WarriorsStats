@@ -11,11 +11,11 @@
 			<tr>
 				<th>Number</th>
 				<th>Name</th>
-				<th ng-click="sortByStat('pts')">PTS</th>
-				<th ng-click="sortByStat('ast')">AST</th>
-				<th ng-click="sortByStat('reb')">REB</th>
+				<th ng-click="sortByStat('PTS')">PTS</th>
+				<th ng-click="sortByStat('AST')">AST</th>
+				<th ng-click="sortByStat('REB')">REB</th>
 			</tr>
-			<tr ng-repeat="player in players" data-stat-table-row player="player"></tr>
+			<tr ng-repeat="player in players | orderBy: sorter" data-stat-table-row player="player"></tr>
 		</table>
 	</body>
 </html>
