@@ -11,9 +11,9 @@
 			<tr>
 				<th>Number</th>
 				<th>Name</th>
-				<th>PTS</th>
-				<th>AST</th>
-				<th>REB</th>
+				<th ng-click="sortByStat('pts')">PTS</th>
+				<th ng-click="sortByStat('ast')">AST</th>
+				<th ng-click="sortByStat('reb')">REB</th>
 			</tr>
 			<tr ng-repeat="player in players" data-stat-table-row player="player"></tr>
 		</table>
