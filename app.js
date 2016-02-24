@@ -15,11 +15,18 @@ app.factory("playerInfoFactory", function ($http, $log) {
 			$log.error("Unable to retrieve info for player " + playerId);
 		});
 	});
+	players.forEach( function (player) {
+		// groom data here
+	});
 	return players;
 });
 
-app.directive("tableRow", function () {
+app.directive("statTableRow", function () {
 	return {
-		templateUrl: "tableRowDirective.html"
+		templateUrl: "statTableRowDirective.html",
+		restrict: "A",
+		scope: {
+			player: "="
+		}
 	};
 });
