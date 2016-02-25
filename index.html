@@ -14,6 +14,10 @@
 				<th ng-click="sortByStat('PTS')">PTS</th>
 				<th ng-click="sortByStat('AST')">AST</th>
 				<th ng-click="sortByStat('REB')">REB</th>
+				<th ng-click="sortByStat('PIE')">PIE</th>
+				<th ng-click="sortByStat('HEIGHT')">Height</th>
+				<th ng-click="sortByStat('WEIGHT')">Weight</th>
+				<th ng-click="sortByStat('SEASON_EXP')">EXP</th>
 			</tr>
 			<tr ng-repeat="player in players | orderBy: sorter" data-stat-table-row player="player"></tr>
 		</table>
