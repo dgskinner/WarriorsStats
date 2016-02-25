@@ -22,6 +22,7 @@ app.factory("playerInfoFactory", function ($http, $log) {
 			for (var i = 0; i < keys.length; i++) {
 				player[keys[i]] = values[i];
 			}
+			player.HEIGHT_IN_INCHES = convertHeightToInches(player.HEIGHT);
 			players.push(player);
 		}).error(function () {
 			$log.error("Unable to retrieve info for player " + playerId);
@@ -32,6 +33,12 @@ app.factory("playerInfoFactory", function ($http, $log) {
 	}
 	function setValues (data) {
 		return data.resultSets[0].rowSet[0].concat(data.resultSets[1].rowSet[0]);
+	}
+	function convertHeightToInches (height) {
+		var splitHeight = height.split("-");
+		var feet = parseInt(splitHeight[0]);
+		var inches = parseInt(splitHeight[1]);
+		return feet * 12 + inches;
 	}
 	return players;
 });
