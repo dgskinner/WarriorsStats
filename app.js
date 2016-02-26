@@ -7,34 +7,70 @@ app.controller("appController",  function ($scope, playerInfoFactory) {
 	}
 });
 
-app.factory("playerInfoFactory", function ($http, $log) {
+app.factory("playerInfoFactory", function ($http, $q, $log) {
 	var playersUrl = "http://stats.nba.com/stats/commonallplayers?Season=2015-16&LeagueID=00&isOnlyCurrentSeason=1&callback=JSON_CALLBACK";
 	var players = [];
-	var keys =  [];
+	var basicKeys = [];
+	var advancedKeys = [];
 
-	function getFullPlayerInfo (playerId) {
-		var playerUrl = "http://stats.nba.com/stats/commonplayerinfo?callback=JSON_CALLBACK&PlayerID=" + playerId;
-		$http.jsonp(playerUrl).success(function (data) {
-			if (keys.length === 0) {
-				keys = setKeys(data);
+	function getBasicPlayerInfo (playerId) {
+		var playerInfoUrl = "http://stats.nba.com/stats/commonplayerinfo?callback=JSON_CALLBACK&PlayerID=" + playerId;
+		$http.jsonp(playerInfoUrl).success(function (data) {
+			if (basicKeys.length === 0) {
+				basicKeys = setBasicKeys(data);
 			}
-			var values = setValues(data);
+			var values = setBasicValues(data);
 			var player = {};
-			for (var i = 0; i < keys.length; i++) {
-				player[keys[i]] = values[i];
+			for (var i = 0; i < basicKeys.length; i++) {
+				player[basicKeys[i]] = values[i];
 			}
 			player.HEIGHT_IN_INCHES = convertHeightToInches(player.HEIGHT);
-			players.push(player);
+			getFullGameLogForPlayer(playerId, player);
+			// players.push(player);
 		}).error(function () {
 			$log.error("Unable to retrieve info for player " + playerId);
 		});
 	}
 
-	function setKeys (data) {
+	// changes state of player object - not sure this the best way...
+	function getFullGameLogForPlayer (playerId, player) {
+		var regularSeasonUrl = "http://stats.nba.com/stats/playergamelog?Season=2015-16&SeasonType=Regular+Season&callback=JSON_CALLBACK&PlayerID=" + playerId;
+		var postSeasonUrl = "http://stats.nba.com/stats/playergamelog?Season=2015-16&SeasonType=Playoffs&callback=JSON_CALLBACK&PlayerID=" + playerId;
+		$q.all([
+			$http.jsonp(regularSeasonUrl),
+			$http.jsonp(postSeasonUrl)
+		]).then(function (responses) {
+			var regularSeasonGames = responses[0].data.resultSets[0].rowSet;
+			var postSeasonGames = responses[1].data.resultSets[0].rowSet;
+			// var avgSteals = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20);
+			player.THREE_POINT_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 12);
+			player.FREE_THROW_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 15);
+			player.STEALS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20);
+			player.BLOCKS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 21);
+			players.push(player);
+		});
+	}
+
+	function averageStatOverRegularAndPostSeason (regularSeasonGames, postSeasonGames, statIndex) {
+		var total = 0;
+		regularSeasonGames.forEach(function (game) {
+			total += game[statIndex];
+		});
+		postSeasonGames.forEach(function (game) {
+			total += game[statIndex];
+		});
+		return Math.round(total / (regularSeasonGames.length + postSeasonGames.length) * 100) / 100;
+	}
+
+	function setBasicKeys (data) {
 		return data.resultSets[0].headers.concat(data.resultSets[1].headers);
 	}
 
-	function setValues (data) {
+	// function setAdvancedKeys (data) {
+	// 	return data.resultSets[0].headers.concat(data.resultSets[1].headers);
+	// }
+
+	function setBasicValues (data) {
 		return data.resultSets[0].rowSet[0].concat(data.resultSets[1].rowSet[0]);
 	}
 
@@ -49,7 +85,8 @@ app.factory("playerInfoFactory", function ($http, $log) {
 		data.resultSets[0].rowSet.forEach( function (playerInfo) {
 			if (playerInfo[10] === "GSW") {
 				var playerId = playerInfo[0];
-				getFullPlayerInfo(playerId);
+				getBasicPlayerInfo(playerId);
+				// getFullGameLogForPlayer(playerId);
 			}
 		});
 	}).error(function () {
