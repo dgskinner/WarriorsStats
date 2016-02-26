@@ -8,12 +8,13 @@ app.controller("appController",  function ($scope, playerInfoFactory) {
 });
 
 app.factory("playerInfoFactory", function ($http, $log) {
-	var PLAYER_IDS = [2571, 203084, 101106, 203546, 201939, 203105, 203110, 2738, 2733, 1626172, 203949, 201575, 201578, 201574, 202691, 2760];
+	var playersUrl = "http://stats.nba.com/stats/commonallplayers?Season=2015-16&LeagueID=00&isOnlyCurrentSeason=1&callback=JSON_CALLBACK";
 	var players = [];
 	var keys =  [];
-	PLAYER_IDS.forEach( function (playerId) {
-		var url = "http://stats.nba.com/stats/commonplayerinfo?callback=JSON_CALLBACK&PlayerID=" + playerId;
-		$http.jsonp(url).success(function (data) {
+
+	function getFullPlayerInfo (playerId) {
+		var playerUrl = "http://stats.nba.com/stats/commonplayerinfo?callback=JSON_CALLBACK&PlayerID=" + playerId;
+		$http.jsonp(playerUrl).success(function (data) {
 			if (keys.length === 0) {
 				keys = setKeys(data);
 			}
@@ -27,19 +28,34 @@ app.factory("playerInfoFactory", function ($http, $log) {
 		}).error(function () {
 			$log.error("Unable to retrieve info for player " + playerId);
 		});
-	});
+	}
+
 	function setKeys (data) {
 		return data.resultSets[0].headers.concat(data.resultSets[1].headers);
 	}
+
 	function setValues (data) {
 		return data.resultSets[0].rowSet[0].concat(data.resultSets[1].rowSet[0]);
 	}
+
 	function convertHeightToInches (height) {
 		var splitHeight = height.split("-");
 		var feet = parseInt(splitHeight[0]);
 		var inches = parseInt(splitHeight[1]);
 		return feet * 12 + inches;
 	}
+
+	$http.jsonp(playersUrl).success(function (data) {
+		data.resultSets[0].rowSet.forEach( function (playerInfo) {
+			if (playerInfo[10] === "GSW") {
+				var playerId = playerInfo[0];
+				getFullPlayerInfo(playerId);
+			}
+		});
+	}).error(function () {
+		$log.error("Unable to retrieve all player info");
+	});
+
 	return players;
 });
 
