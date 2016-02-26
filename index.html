@@ -2,27 +2,36 @@
 <html>
 	<head>
 		<link rel="shortcut icon" href="images/warriors-favicon.ico" type="image/x-icon">
-		<link rel="icon" href="images/warriors-favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="styles.css">
+		<link rel="icon" href="images/gsw-favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="stylesheets/styles.css">
 		<script type="text/javascript" src="angular-1.3.20.js"></script>
 		<script type="text/javascript" src="app.js"></script>
 	</head>
 	<body ng-app="app" ng-controller="appController">
-		Warriors Stats
-		<table>
-			<tr>
+		<h1>Warriors Stats</h1>
+		<table ng-show="players.length > 14">
+			<tr class="header-row">
 				<th>Number</th>
 				<th>Name</th>
-				<th ng-click="sortByStat('PTS')">PTS</th>
-				<th ng-click="sortByStat('AST')">AST</th>
-				<th ng-click="sortByStat('REB')">REB</th>
-				<th ng-click="sortByStat('PIE')">PIE</th>
-				<th ng-click="sortByStat('HEIGHT_IN_INCHES')">Height</th>
-				<th ng-click="sortByStat('WEIGHT')">Weight</th>
-				<th ng-click="sortByStat('SEASON_EXP')">EXP</th>
+				<th class="sortable" ng-click="sortByStat('PTS')">PTS</th>
+				<th class="sortable" ng-click="sortByStat('AST')">AST</th>
+				<th class="sortable" ng-click="sortByStat('REB')">REB</th>
+				<th class="sortable" ng-click="sortByStat('STEALS')">Steals</th>
+				<th class="sortable" ng-click="sortByStat('BLOCKS')">Blocks</th>
+				<th class="sortable" ng-click="sortByStat('THREE_POINT_PCT')">3PT%</th>
+				<th class="sortable" ng-click="sortByStat('FREE_THROW_PCT')">FT%</th>
+				<th class="sortable" ng-click="sortByStat('PIE')">PIE</th>
+				<th class="sortable" ng-click="sortByStat('HEIGHT_IN_INCHES')">Height</th>
+				<th class="sortable" ng-click="sortByStat('WEIGHT')">Weight</th>
+				<th class="sortable" ng-click="sortByStat('SEASON_EXP')">EXP</th>
 			</tr>
 			<tr ng-repeat="player in players | orderBy: sorter" data-stat-table-row player="player"></tr>
 		</table>
+
+		<div ng-show="players.length < 15" class="box">
+			Loading...
+			<img src="images/gsw.png"></img>
+		</div>
 	</body>
 </html>
 
