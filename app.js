@@ -45,8 +45,10 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
 			// var avgSteals = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20);
 			player.THREE_POINT_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 12, true);
 			player.FREE_THROW_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 15, true);
+			player.FIELD_GOAL_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 9, true);
 			player.STEALS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20, false);
 			player.BLOCKS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 21, false);
+			player.MIN = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 6, false);
 			players.push(player);
 		});
 	}
