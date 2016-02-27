@@ -9,8 +9,9 @@
 	</head>
 	<body ng-app="app" ng-controller="appController">
 		<h1>Warriors Stats</h1>
+		<h6>Click a stat column header to sort by that column</h6>
 		<table ng-show="players.length > 14">
-			<tr class="header-row">
+			<tr>
 				<th>Number</th>
 				<th>Name</th>
 				<th class="sortable" ng-click="sortByStat('PTS')">PTS</th>
@@ -25,7 +26,10 @@
 				<th class="sortable" ng-click="sortByStat('WEIGHT')">Weight</th>
 				<th class="sortable" ng-click="sortByStat('SEASON_EXP')">EXP</th>
 			</tr>
-			<tr ng-repeat="player in players | orderBy: sorter" data-stat-table-row player="player"></tr>
+			<!-- ng-class-even="'even-row'" -->
+			<tr ng-class-odd="'odd-row'"
+			    ng-repeat="player in players | orderBy: sorter" data-stat-table-row player="player">
+			</tr>
 		</table>
 
 		<div ng-show="players.length < 15" class="box">
