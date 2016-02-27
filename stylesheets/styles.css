@@ -5,6 +5,7 @@ body {
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
   color: #333;
   text-align: center;
+  cursor: default;
 }
 
 h1 {
@@ -22,7 +23,6 @@ table {
   border-radius: 5px;
   border-spacing: 0px 0px;
   border: 2px solid #333;
-  cursor: default;
 }
 
 tr.odd-row {

@@ -43,15 +43,15 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
 			var regularSeasonGames = responses[0].data.resultSets[0].rowSet;
 			var postSeasonGames = responses[1].data.resultSets[0].rowSet;
 			// var avgSteals = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20);
-			player.THREE_POINT_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 12);
-			player.FREE_THROW_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 15);
-			player.STEALS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20);
-			player.BLOCKS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 21);
+			player.THREE_POINT_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 12, true);
+			player.FREE_THROW_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 15, true);
+			player.STEALS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20, false);
+			player.BLOCKS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 21, false);
 			players.push(player);
 		});
 	}
 
-	function averageStatOverRegularAndPostSeason (regularSeasonGames, postSeasonGames, statIndex) {
+	function averageStatOverRegularAndPostSeason (regularSeasonGames, postSeasonGames, statIndex, isPercentage) {
 		var total = 0;
 		regularSeasonGames.forEach(function (game) {
 			total += game[statIndex];
@@ -59,7 +59,14 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
 		postSeasonGames.forEach(function (game) {
 			total += game[statIndex];
 		});
-		return Math.round(total / (regularSeasonGames.length + postSeasonGames.length) * 100) / 100;
+		var gamesPlayed = regularSeasonGames.length + postSeasonGames.length;
+		// if it's a percentage stat then we want two decimal places
+		// otherwise one is fine (or zero; 2.0 can simply be displayed at 2)
+		if (isPercentage) {
+			return (total / gamesPlayed).toFixed(2);
+		} else {
+			return Math.round(total / gamesPlayed * 10) / 10;
+		}
 	}
 
 	function setBasicKeys (data) {
