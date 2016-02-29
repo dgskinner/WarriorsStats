@@ -42,18 +42,17 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
 		]).then(function (responses) {
 			var regularSeasonGames = responses[0].data.resultSets[0].rowSet;
 			var postSeasonGames = responses[1].data.resultSets[0].rowSet;
-			// var avgSteals = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20);
-			player.THREE_POINT_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 12, true);
-			player.FREE_THROW_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 15, true);
-			player.FIELD_GOAL_PCT = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 9, true);
-			player.STEALS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20, false);
-			player.BLOCKS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 21, false);
-			player.MIN = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 6, false);
+			player.FIELD_GOAL_PCT = getPercentageMadeOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 7, 8);
+			player.THREE_POINT_PCT = getPercentageMadeOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 10, 11);
+			player.FREE_THROW_PCT = getPercentageMadeOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 13, 14);
+			player.STEALS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20);
+			player.BLOCKS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 21);
+			player.MIN = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 6);
 			players.push(player);
 		});
 	}
 
-	function averageStatOverRegularAndPostSeason (regularSeasonGames, postSeasonGames, statIndex, isPercentage) {
+	function averageStatOverRegularAndPostSeason (regularSeasonGames, postSeasonGames, statIndex) {
 		var total = 0;
 		regularSeasonGames.forEach(function (game) {
 			total += game[statIndex];
@@ -62,13 +61,23 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
 			total += game[statIndex];
 		});
 		var gamesPlayed = regularSeasonGames.length + postSeasonGames.length;
-		// if it's a percentage stat then we want two decimal places
-		// otherwise one is fine (or zero; 2.0 can simply be displayed at 2)
-		if (isPercentage) {
-			return (total / gamesPlayed).toFixed(2);
-		} else {
-			return Math.round(total / gamesPlayed * 10) / 10;
-		}
+		// one decimal place is fine here (or zero; 2.0 will simply be displayed at 2)
+		return Math.round(total / gamesPlayed * 10) / 10;
+	}
+
+	function getPercentageMadeOverRegularAndPostSeason (regularSeasonGames, postSeasonGames, madeIndex, attemptedIndex) {
+		var totalMade = 0;
+		var totalAttempted = 0;
+		regularSeasonGames.forEach(function (game) {
+			totalMade += game[madeIndex];
+			totalAttempted += game[attemptedIndex];
+		});
+		postSeasonGames.forEach(function (game) {
+			totalMade += game[madeIndex];
+			totalAttempted += game[attemptedIndex];
+		});
+		// want two decimal places no matter what for percentage stats
+		return totalAttempted === 0 ? 0 : (totalMade / totalAttempted).toFixed(2);
 	}
 
 	function setBasicKeys (data) {
@@ -76,7 +85,6 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
 	}
 
 	// function setAdvancedKeys (data) {
-	// 	return data.resultSets[0].headers.concat(data.resultSets[1].headers);
 	// }
 
 	function setBasicValues (data) {
