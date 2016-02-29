@@ -4,36 +4,21 @@
 		<link rel="shortcut icon" href="images/warriors-favicon.ico" type="image/x-icon">
 		<link rel="icon" href="images/gsw-favicon.ico" type="image/x-icon">
 		<link rel="stylesheet" href="stylesheets/styles.css">
-		<script type="text/javascript" src="angular-1.3.20.js"></script>
-		<script type="text/javascript" src="app.js"></script>
+		<script type="text/javascript" src="javascript/angular-1.3.20.js"></script>
+		<script type="text/javascript" src="javascript/app.js"></script>
+		<script type="text/javascript" src="javascript/playerInfoFactory.js"></script>
+		<script type="text/javascript" src="javascript/statTableHeaderRowDirective.js"></script>
+		<script type="text/javascript" src="javascript/statTableRowDirective.js"></script>
 	</head>
+
 	<body ng-app="app" ng-controller="appController">
 		<div class="title-box">
 			<h5>GOLDEN STATE WARRIORS<br>TEAM STATS</h5>
 			<h6>Click a stat column header to sort by that column</h6>
 		</div>
+
 		<table ng-show="players.length > 14">
-			<tr>
-				<th>Number</th>
-				<th>Name</th>
-				<th class="sortable" ng-click="sortByStat('PTS')">PTS</th>
-				<th class="sortable" ng-click="sortByStat('AST')">AST</th>
-				<th class="sortable" ng-click="sortByStat('REB')">REB</th>
-				<th class="sortable" ng-click="sortByStat('STEALS')">STL</th>
-				<th class="sortable" ng-click="sortByStat('BLOCKS')">BLK</th>
-				<th class="sortable" ng-click="sortByStat('FIELD_GOAL_PCT')">FG%</th>
-				<th class="sortable" ng-click="sortByStat('THREE_POINT_PCT')">3PT%</th>
-				<th class="sortable" ng-click="sortByStat('FREE_THROW_PCT')">FT%</th>
-				<th class="sortable" ng-click="sortByStat('MIN')">MIN</th>
-				<th class="sortable" ng-click="sortByStat('PIE')"
-					title="PIE measures a player's overall statistical contribution against the total statistics in games they play in. PIE yields results which are comparable to other advanced statistics (e.g. PER) using a simple formula. (PTS + FGM + FTM - FGA - FTA + DREB + (.5 * OREB) + AST + STL + (.5 * BLK) - PF - TO) / (GmPTS + GmFGM + GmFTM - GmFGA - GmFTA + GmDREB + (.5 * GmOREB) + GmAST + GmSTL + (.5 * GmBLK) - GmPF - GmTO)"
-				>PIE</th>
-				<th class="sortable" ng-click="sortByStat('HEIGHT_IN_INCHES')">Height</th>
-				<th class="sortable" ng-click="sortByStat('WEIGHT')">Weight</th>
-				<th class="sortable" ng-click="sortByStat('SEASON_EXP')"
-					title="Years of experience in the NBA"
-				>EXP</th>
-			</tr>
+			<tr data-stat-table-header-row></tr>
 			<tr ng-class-odd="'odd-row'"
 			    ng-repeat="player in players | orderBy: sorter" data-stat-table-row player="player">
 			</tr>
@@ -45,4 +30,3 @@
 		</div>
 	</body>
 </html>
-
