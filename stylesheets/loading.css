@@ -1,0 +1,53 @@
+/* http://codepen.io/rglazebrook/pen/EBLkl */
+
+.box {
+  text-align: center;
+  background-color: white;
+  margin: 0 auto;
+  width: 978px;
+  height: 433px;
+  line-height: 433px;
+  position: relative;
+  box-shadow: inset 0 0 3px #000;
+  border-radius: 5px;
+  border: 1px solid #111;
+  overflow: hidden;
+}
+
+.box img {
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: inset -5px -5px 5px rgba(0,0,0,.6), 15px 15px 2px rgba(0,0,0,.04);
+  position: absolute;
+  -webkit-animation: moveX 1.05s linear 0s infinite alternate, moveY 1.4s linear 0s infinite alternate;
+  -moz-animation: moveX 1.05s linear 0s infinite alternate, moveY 1.4s linear 0s infinite alternate;
+  -o-animation: moveX 1.05s linear 0s infinite alternate, moveY 1.4s linear 0s infinite alternate;
+  animation: moveX 1.05s linear 0s infinite alternate, moveY 1.4s linear 0s infinite alternate;
+}
+
+@-webkit-keyframes moveX {
+  from { left: 0; } to { left: 928px; }
+}
+@-moz-keyframes moveX {
+  from { left: 0; } to { left: 928px; }
+}
+@-o-keyframes moveX {
+  from { left: 0; } to { left: 928px; }
+}
+@keyframes moveX {
+  from { left: 0; } to { left: 928px; }
+}
+@-webkit-keyframes moveY {
+  from { top: 0; } to { top: 383px; }
+}
+@-moz-keyframes moveY {
+  from { top: 0; } to { top: 383px; }
+}
+@-o-keyframes moveY {
+  from { top: 0; } to { top: 383px; }
+}
+@keyframes moveY {
+  from { top: 0; } to { top: 383px; }
+}
