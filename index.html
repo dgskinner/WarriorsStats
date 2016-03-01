@@ -12,21 +12,34 @@
 	</head>
 
 	<body ng-app="app" ng-controller="appController">
-		<div class="title-box">
-			<h5>GOLDEN STATE WARRIORS<br>TEAM STATS</h5>
-			<h6>Click a stat column header to sort by that column</h6>
+		<div class="side-bar">
+			<h5>WEST</h5>
+			<h6 ng-repeat="team in teams.west" ng-click="changeTeam(team)">{{ team }}</h6>
 		</div>
 
-		<table ng-show="players.length > 14">
-			<tr data-stat-table-header-row></tr>
+		<div class="top">
+		<!-- <div class="title-box"> -->
+			<h3>GOLDEN STATE WARRIORS</h3>
+		<!-- </div> -->
+		</div>
+			<h4>Click a stat column header to sort by that column</h4>
+
+		<table ng-show="finishedLoading()">
+			<tr stat-table-header-row></tr>
 			<tr ng-class-odd="'odd-row'"
-			    ng-repeat="player in players | orderBy: sorter" data-stat-table-row player="player">
+			    ng-repeat="player in playerInfo.players | orderBy: sorter" stat-table-row player="player">
 			</tr>
 		</table>
 
-		<div ng-show="players.length < 15" class="box">
+		<div ng-show="!finishedLoading()" class="box">
 			Loading...
 			<img src="images/basketball.png"></img>
+		</div>
+
+		<div class="footer">
+			<a class="footer-link" href="https://linkedin.com/in/skinnerduncan">Contact</a> |
+			<a class="footer-link" href="https://github.com/dgskinner/warriors">Source Code</a> |
+			<a class="footer-link" href="https://github.com/seemethere/nba_py/wiki/stats.nba.com-Endpoint-Documentation">API Documentation</a>
 		</div>
 	</body>
 </html>

@@ -1,6 +1,11 @@
 app.factory("playerInfoFactory", function ($http, $q, $log) {
+    // debugger;
+    // team = typeof team === "undefined" ? "GSW" : team;
+
+    var playerInfoFactory = {};
+    // playerInfoFactory.players = [];
+
     var playersUrl = "http://stats.nba.com/stats/commonallplayers?Season=2015-16&LeagueID=00&isOnlyCurrentSeason=1&callback=JSON_CALLBACK";
-    var players = [];
     var basicKeys = [];
     var advancedKeys = [];
 
@@ -39,7 +44,7 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
             player.STEALS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20);
             player.BLOCKS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 21);
             player.MIN = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 6);
-            players.push(player);
+            playerInfoFactory.players.push(player);
         });
     }
 
@@ -89,17 +94,34 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
         return feet * 12 + inches;
     }
 
-    $http.jsonp(playersUrl).success(function (data) {
-        data.resultSets[0].rowSet.forEach( function (playerInfo) {
-            if (playerInfo[10] === "GSW") {
-                var playerId = playerInfo[0];
-                getBasicPlayerInfo(playerId);
-                // getFullGameLogForPlayer(playerId);
-            }
-        });
-    }).error(function () {
-        $log.error("Unable to retrieve all player info");
-    });
+    // $http.jsonp(playersUrl).success(function (data) {
+    //     data.resultSets[0].rowSet.forEach( function (playerInfo) {
+    //         if (playerInfo[10] === team) {
+    //             var playerId = playerInfo[0];
+    //             getBasicPlayerInfo(playerId);
+    //             // getFullGameLogForPlayer(playerId);
+    //         }
+    //     });
+    // }).error(function () {
+    //     $log.error("Unable to retrieve all player info");
+    // });
 
-    return players;
+    playerInfoFactory.getInfoForTeam = function (team) {
+        playerInfoFactory.players = [];
+        playerInfoFactory.rosterSize = 0;
+        $http.jsonp(playersUrl).success(function (data) {
+            data.resultSets[0].rowSet.forEach( function (playerInfo) {
+                if (playerInfo[10] === team) {
+                    playerInfoFactory.rosterSize++;
+                    var playerId = playerInfo[0];
+                    getBasicPlayerInfo(playerId);
+                    // getFullGameLogForPlayer(playerId);
+                }
+            });
+        }).error(function () {
+            $log.error("Unable to retrieve all player info");
+        });
+    }
+
+    return playerInfoFactory;
 });
