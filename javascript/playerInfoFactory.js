@@ -97,12 +97,12 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
         return feet * 12 + inches;
     }
 
-    playerInfoFactory.getInfoForTeam = function (team) {
+    playerInfoFactory.getInfoForTeam = function (teamAbbreviation   ) {
         playerInfoFactory.players = [];
         playerInfoFactory.rosterSize = 0;
         $http.jsonp(playersUrl).success(function (data) {
             data.resultSets[0].rowSet.forEach( function (playerInfo) {
-                if (playerInfo[10] === team) {
+                if (playerInfo[10] === teamAbbreviation) {
                     playerInfoFactory.rosterSize++;
                     var playerId = playerInfo[0];
                     getBasicPlayerInfo(playerId);

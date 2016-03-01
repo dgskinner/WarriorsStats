@@ -54,7 +54,7 @@ h6.select-team {
   margin: 15px 0px 15px 0px;
 }
 
-h6.select-team:hover {
+h6.select-team.enabled:hover {
   text-decoration: underline;
   cursor: pointer;
 }

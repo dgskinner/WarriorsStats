@@ -15,13 +15,17 @@
 	<body ng-app="app" ng-controller="appController">
 		<div class="side-bar left">
 			<h5>WEST</h5>
-			<h6 ng-repeat="team in teams.west" ng-click="changeTeam(team)" class="select-team">
+			<h6 ng-repeat="team in teams.west"
+				class="select-team ng-class:{ 'enabled': finishedLoading() }"
+				ng-click="changeTeam(team)">
 				{{ team.abbreviation }}
 			</h6>
 		</div>
 		<div class="side-bar right">
 			<h5>EAST</h5>
-			<h6 ng-repeat="team in teams.east" ng-click="changeTeam(team)" class="select-team">
+			<h6 ng-repeat="team in teams.east"
+				class="select-team ng-class:{ 'enabled': finishedLoading() }"
+				ng-click="changeTeam(team)">
 				{{ team.abbreviation }}
 			</h6>
 		</div>		

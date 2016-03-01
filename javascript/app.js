@@ -1,11 +1,13 @@
 var app = angular.module("app", []);
 
 app.controller("appController",  function ($scope, playerInfoFactory, teamInfoFactory) {
-	$scope.playerInfo = playerInfoFactory;
 	$scope.teams = teamInfoFactory;
+	$scope.currentTeam = $scope.teams.west[0];
+	$scope.playerInfo = playerInfoFactory;
+	$scope.playerInfo.getInfoForTeam($scope.currentTeam.abbreviation);
 
 	$scope.changeTeam = function (team) {
-		if (!$scope.currentTeam || $scope.currentTeam.abbreviation !== team.abbreviation) {
+		if ($scope.finishedLoading()) {
 			$scope.playerInfo.getInfoForTeam(team.abbreviation);
 			$scope.currentTeam = team;
 		}
@@ -19,6 +21,4 @@ app.controller("appController",  function ($scope, playerInfoFactory, teamInfoFa
 		return $scope.playerInfo.rosterSize > 0 &&
 			$scope.playerInfo.players.length === $scope.playerInfo.rosterSize;
 	}
-
-	$scope.changeTeam($scope.teams.west[0]);
 });
