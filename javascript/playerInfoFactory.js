@@ -20,6 +20,9 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
             for (var i = 0; i < basicKeys.length; i++) {
                 player[basicKeys[i]] = values[i];
             }
+            // if (player.TimeFrame === undefined) {
+            //     debugger;
+            // }
             player.HEIGHT_IN_INCHES = convertHeightToInches(player.HEIGHT);
             getFullGameLogForPlayer(playerId, player);
             // players.push(player);
@@ -93,18 +96,6 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
         var inches = parseInt(splitHeight[1]);
         return feet * 12 + inches;
     }
-
-    // $http.jsonp(playersUrl).success(function (data) {
-    //     data.resultSets[0].rowSet.forEach( function (playerInfo) {
-    //         if (playerInfo[10] === team) {
-    //             var playerId = playerInfo[0];
-    //             getBasicPlayerInfo(playerId);
-    //             // getFullGameLogForPlayer(playerId);
-    //         }
-    //     });
-    // }).error(function () {
-    //     $log.error("Unable to retrieve all player info");
-    // });
 
     playerInfoFactory.getInfoForTeam = function (team) {
         playerInfoFactory.players = [];

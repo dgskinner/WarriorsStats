@@ -27,22 +27,36 @@ div.title-box {
 
 div.top {
   background-color: white;
+  height: 100px;
 }
 
-h3 {
-  padding: 30px 0px 30px 0px;
-  margin: 0px 0px 0px 0px;
+img.team-icon {
+  vertical-align: middle;
+}
+
+h3.team-name {
+  display: inline-block;
+  line-height: 100px;
+  margin: 0px 0px 0px 10px;
   font-size: 120%;
 }
 
 h4 {
-  /*margin-top: 5px;*/
   margin-bottom: 2px;
   font-size: 70%;
 }
 
-h6 {
-  margin: 5px 0px 5px 0px;
+h5 {
+  margin: 50px 0px 30px 0px;
+}
+
+h6.select-team {
+  margin: 15px 0px 15px 0px;
+}
+
+h6.select-team:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 table {
@@ -114,13 +128,20 @@ table tr:last-child td:last-child {
 
 div.side-bar {
   position: fixed;
-  left: 0px;
   height: 100%;
   width: 60px;
   background-color: #333;
   /*border-right: 1px solid #333;*/
   color: white;
   z-index: 1;
+}
+
+div.side-bar.left {
+  left: 0px;
+}
+
+div.side-bar.right {
+  right: 0px;
 }
 
 div.footer {
