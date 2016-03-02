@@ -7,7 +7,7 @@ app.controller("appController",  function ($scope, playerInfoFactory, teamInfoFa
 	$scope.playerInfo.getInfoForTeam($scope.currentTeam.abbreviation);
 
 	$scope.changeTeam = function (team) {
-		if ($scope.finishedLoading()) {
+		if ($scope.finishedLoading() && $scope.currentTeam.abbreviation !== team.abbreviation) {
 			$scope.playerInfo.getInfoForTeam(team.abbreviation);
 			$scope.currentTeam = team;
 		}

@@ -32,7 +32,7 @@
 
 		<div class="top">
 			<img class="team-icon" ng-src="http://i.cdn.turner.com/nba/nba/.element/img/1.0/logos/teamlogos_80x64/{{ currentTeam.nameForIconUrl }}.gif"></img>
-			<h3 class="team-name">{{ currentTeam.fullName }}</h3>
+			<h3 class="team-name">{{ currentTeam.fullName.toUpperCase() }}</h3>
 		</div>
 		<h4>Click a stat column header to sort by that column</h4>
 
@@ -43,7 +43,7 @@
 			</tr>
 		</table>
 
-		<div ng-show="!finishedLoading()" class="box">
+		<div ng-show="!finishedLoading()" class="loading-box">
 			Loading...
 			<img src="images/basketball.png"></img>
 		</div>
