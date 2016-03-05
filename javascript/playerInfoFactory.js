@@ -1,6 +1,6 @@
 app.factory("playerInfoFactory", function ($http, $q, $log) {
+    var playerInfoFactory = {};
     var playersUrl = "http://stats.nba.com/stats/commonallplayers?Season=2015-16&LeagueID=00&isOnlyCurrentSeason=1&callback=JSON_CALLBACK";
-    var players = [];
     var basicKeys = [];
     var advancedKeys = [];
 
@@ -33,13 +33,17 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
         ]).then(function (responses) {
             var regularSeasonGames = responses[0].data.resultSets[0].rowSet;
             var postSeasonGames = responses[1].data.resultSets[0].rowSet;
-            player.FIELD_GOAL_PCT = getPercentageMadeOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 7, 8);
-            player.THREE_POINT_PCT = getPercentageMadeOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 10, 11);
-            player.FREE_THROW_PCT = getPercentageMadeOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 13, 14);
-            player.STEALS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20);
-            player.BLOCKS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 21);
-            player.MIN = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 6);
-            players.push(player);
+            if (regularSeasonGames.length > 0 || postSeasonGames.length > 0) {
+                player.FIELD_GOAL_PCT = getPercentageMadeOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 7, 8);
+                player.THREE_POINT_PCT = getPercentageMadeOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 10, 11);
+                player.FREE_THROW_PCT = getPercentageMadeOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 13, 14);
+                player.STEALS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 20);
+                player.BLOCKS = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 21);
+                player.MIN = averageStatOverRegularAndPostSeason(regularSeasonGames, postSeasonGames, 6);
+                playerInfoFactory.players.push(player);
+            } else {
+                playerInfoFactory.rosterSize--;
+            }
         });
     }
 
@@ -52,7 +56,7 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
             total += game[statIndex];
         });
         var gamesPlayed = regularSeasonGames.length + postSeasonGames.length;
-        // one decimal place is fine here (or zero; 2.0 will simply be displayed at 2)
+        // one decimal place is fine here (or zero; 2.0 will simply be displayed as 2)
         return Math.round(total / gamesPlayed * 10) / 10;
     }
 
@@ -89,17 +93,22 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
         return feet * 12 + inches;
     }
 
-    $http.jsonp(playersUrl).success(function (data) {
-        data.resultSets[0].rowSet.forEach( function (playerInfo) {
-            if (playerInfo[10] === "GSW") {
-                var playerId = playerInfo[0];
-                getBasicPlayerInfo(playerId);
-                // getFullGameLogForPlayer(playerId);
-            }
+    playerInfoFactory.getInfoForTeam = function (teamAbbreviation   ) {
+        playerInfoFactory.players = [];
+        playerInfoFactory.rosterSize = 0;
+        $http.jsonp(playersUrl).success(function (data) {
+            data.resultSets[0].rowSet.forEach( function (playerInfo) {
+                if (playerInfo[10] === teamAbbreviation) {
+                    playerInfoFactory.rosterSize++;
+                    var playerId = playerInfo[0];
+                    getBasicPlayerInfo(playerId);
+                    // getFullGameLogForPlayer(playerId);
+                }
+            });
+        }).error(function () {
+            $log.error("Unable to retrieve all player info");
         });
-    }).error(function () {
-        $log.error("Unable to retrieve all player info");
-    });
+    }
 
-    return players;
+    return playerInfoFactory;
 });

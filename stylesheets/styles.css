@@ -1,44 +1,53 @@
 @import "loading.css";
 
 body {
-  background: #333;
-  background-image: url("../images/gsw.png");
-  background-size: 100px 100px;
+  background: #F0F0F0;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
   color: #333;
   text-align: center;
   cursor: default;
+  margin: 0px;
 }
 
-div.title-box {
-  margin-top: 50px;
-  width: 350px;
-  background: white;
-  margin-left: auto;
-  margin-right: auto;
-  opacity: 0.95;
-  border: 2px solid #333;
-  border: 2px solid #333;
-  border: 2px solid #333;
-  border-radius: 5px 5px 0px 0px;
-  margin-bottom: -2px
+div.top {
+  background-color: white;
+  height: 100px;
 }
 
-h5 {
-  margin: 10px 0px 0px 0px;
-  color: black;
+img.team-icon {
+  vertical-align: middle;
+}
+
+h3.team-name {
+  display: inline-block;
+  line-height: 100px;
+  margin: 0px 0px 0px 10px;
   font-size: 120%;
 }
 
-h6 {
-  margin-top: 5px;
+h4 {
   margin-bottom: 2px;
+  font-size: 70%;
+}
+
+h5 {
+  margin: 50px 0px 30px 0px;
+}
+
+h6.select-team {
+  margin: 13px 0px 13px 0px;
+}
+
+h6.select-team.enabled:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 table {
+  font-size: 85%;
   margin: auto;
   border-spacing: 0px 0px;
-  border: 2px solid #333;
+  border: 1px solid #333;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -46,11 +55,10 @@ table {
 
 tr {
   background: white;
-  opacity: 0.95;
 }
 
 tr.odd-row {
-  background: #E8E8E8;
+  background: #F0F0F0;
 }
 
 th {
@@ -69,10 +77,6 @@ th.sortable:hover {
   -moz-box-shadow: inset 0 0 5px blue;
   -webkit-box-shadow: inset 0 0 5px blue;
 }
-
-/*span.pie-help {
-  cursor: default;
-}*/
 
 td {
   padding-left: 10px;
@@ -100,4 +104,37 @@ table tr:last-child td:last-child {
     border-bottom-right-radius: 4px;
     -moz-border-bottom-right-radius: 4px;
     -webkit-border-bottom-right-radius: 4px;
+}
+
+div.side-bar {
+  position: fixed;
+  height: 100%;
+  width: 70px;
+  background-color: #333;
+  /*border-right: 1px solid #333;*/
+  color: white;
+  z-index: 1;
+}
+
+div.side-bar.left {
+  left: 0px;
+}
+
+div.side-bar.right {
+  right: 0px;
+}
+
+div.footer {
+  position: fixed;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  bottom: 0;
+  background-color: white;
+  color: #333;
+  font-size: 80%;
+}
+
+a.footer-link {
+  margin: 0px 10px 0px 10px;
 }

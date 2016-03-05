@@ -8,26 +8,51 @@
 		<script type="text/javascript" src="javascript/angular-1.3.20.js"></script>
 		<script type="text/javascript" src="javascript/app.js"></script>
 		<script type="text/javascript" src="javascript/playerInfoFactory.js"></script>
+		<script type="text/javascript" src="javascript/teamInfoFactory.js"></script>
 		<script type="text/javascript" src="javascript/statTableHeaderRowDirective.js"></script>
 		<script type="text/javascript" src="javascript/statTableRowDirective.js"></script>
 	</head>
 
 	<body ng-app="app" ng-controller="appController">
-		<div class="title-box">
-			<h5>GOLDEN STATE WARRIORS<br>TEAM STATS</h5>
-			<h6>Click a stat column header to sort by that column</h6>
+		<div class="side-bar left">
+			<h5>WEST</h5>
+			<h6 ng-repeat="team in teams.west"
+				class="select-team ng-class:{ 'enabled': finishedLoading() }"
+				ng-click="changeTeam(team)">
+				{{ team.abbreviation }}
+			</h6>
 		</div>
+		<div class="side-bar right">
+			<h5>EAST</h5>
+			<h6 ng-repeat="team in teams.east"
+				class="select-team ng-class:{ 'enabled': finishedLoading() }"
+				ng-click="changeTeam(team)">
+				{{ team.abbreviation }}
+			</h6>
+		</div>		
 
-		<table ng-show="players.length > 14">
-			<tr data-stat-table-header-row></tr>
+		<div class="top">
+			<img class="team-icon" ng-src="http://i.cdn.turner.com/nba/nba/.element/img/1.0/logos/teamlogos_80x64/{{ currentTeam.nameForIconUrl }}.gif"></img>
+			<h3 class="team-name">{{ currentTeam.fullName.toUpperCase() }}</h3>
+		</div>
+		<h4>Click a stat column header to sort by that column</h4>
+
+		<table ng-show="finishedLoading()">
+			<tr stat-table-header-row></tr>
 			<tr ng-class-odd="'odd-row'"
-			    ng-repeat="player in players | orderBy: sorter" data-stat-table-row player="player">
+			    ng-repeat="player in playerInfo.players | orderBy: sorter" stat-table-row player="player">
 			</tr>
 		</table>
 
-		<div ng-show="players.length < 15" class="box">
+		<div ng-show="!finishedLoading()" class="loading-box">
 			Loading...
-			<img src="images/gsw.png"></img>
+			<img src="images/basketball.png"></img>
+		</div>
+
+		<div class="footer">
+			<a class="footer-link" href="https://github.com/dgskinner/warriors">Source Code</a> |
+			<a class="footer-link" href="https://github.com/seemethere/nba_py/wiki/stats.nba.com-Endpoint-Documentation">API Documentation</a> |
+			<a class="footer-link" href="https://linkedin.com/in/skinnerduncan">Contact</a>
 		</div>
 	</body>
 </html>
