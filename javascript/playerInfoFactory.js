@@ -2,7 +2,6 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
     var playerInfoFactory = {};
     var playersUrl = "http://stats.nba.com/stats/commonallplayers?Season=2015-16&LeagueID=00&isOnlyCurrentSeason=1&callback=JSON_CALLBACK";
     var basicKeys = [];
-    var advancedKeys = [];
 
     function getBasicPlayerInfo (playerId) {
         var playerInfoUrl = "http://stats.nba.com/stats/commonplayerinfo?callback=JSON_CALLBACK&PlayerID=" + playerId;
@@ -22,7 +21,6 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
         });
     }
 
-    // changes state of player object - not sure this the best way...
     function getFullGameLogForPlayer (playerId, player) {
         var regularSeasonUrl = "http://stats.nba.com/stats/playergamelog?Season=2015-16&SeasonType=Regular+Season&callback=JSON_CALLBACK&PlayerID=" + playerId;
         var postSeasonUrl = "http://stats.nba.com/stats/playergamelog?Season=2015-16&SeasonType=Playoffs&callback=JSON_CALLBACK&PlayerID=" + playerId;
