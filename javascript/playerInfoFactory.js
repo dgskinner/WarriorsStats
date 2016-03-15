@@ -17,7 +17,6 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
             }
             player.HEIGHT_IN_INCHES = convertHeightToInches(player.HEIGHT);
             getFullGameLogForPlayer(playerId, player);
-            // players.push(player);
         }).error(function () {
             $log.error("Unable to retrieve info for player " + playerId);
         });
@@ -79,9 +78,6 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
         return data.resultSets[0].headers.concat(data.resultSets[1].headers);
     }
 
-    // function setAdvancedKeys (data) {
-    // }
-
     function setBasicValues (data) {
         return data.resultSets[0].rowSet[0].concat(data.resultSets[1].rowSet[0]);
     }
@@ -102,7 +98,6 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
                     playerInfoFactory.rosterSize++;
                     var playerId = playerInfo[0];
                     getBasicPlayerInfo(playerId);
-                    // getFullGameLogForPlayer(playerId);
                 }
             });
         }).error(function () {
