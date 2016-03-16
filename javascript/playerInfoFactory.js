@@ -2,7 +2,6 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
     var playerInfoFactory = {};
     var playersUrl = "http://stats.nba.com/stats/commonallplayers?Season=2015-16&LeagueID=00&isOnlyCurrentSeason=1&callback=JSON_CALLBACK";
     var basicKeys = [];
-    var advancedKeys = [];
 
     function getBasicPlayerInfo (playerId) {
         var playerInfoUrl = "http://stats.nba.com/stats/commonplayerinfo?callback=JSON_CALLBACK&PlayerID=" + playerId;
@@ -17,13 +16,11 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
             }
             player.HEIGHT_IN_INCHES = convertHeightToInches(player.HEIGHT);
             getFullGameLogForPlayer(playerId, player);
-            // players.push(player);
         }).error(function () {
             $log.error("Unable to retrieve info for player " + playerId);
         });
     }
 
-    // changes state of player object - not sure this the best way...
     function getFullGameLogForPlayer (playerId, player) {
         var regularSeasonUrl = "http://stats.nba.com/stats/playergamelog?Season=2015-16&SeasonType=Regular+Season&callback=JSON_CALLBACK&PlayerID=" + playerId;
         var postSeasonUrl = "http://stats.nba.com/stats/playergamelog?Season=2015-16&SeasonType=Playoffs&callback=JSON_CALLBACK&PlayerID=" + playerId;
@@ -79,9 +76,6 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
         return data.resultSets[0].headers.concat(data.resultSets[1].headers);
     }
 
-    // function setAdvancedKeys (data) {
-    // }
-
     function setBasicValues (data) {
         return data.resultSets[0].rowSet[0].concat(data.resultSets[1].rowSet[0]);
     }
@@ -102,7 +96,6 @@ app.factory("playerInfoFactory", function ($http, $q, $log) {
                     playerInfoFactory.rosterSize++;
                     var playerId = playerInfo[0];
                     getBasicPlayerInfo(playerId);
-                    // getFullGameLogForPlayer(playerId);
                 }
             });
         }).error(function () {

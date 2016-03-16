@@ -136,7 +136,7 @@ app.factory("teamInfoFactory", function () {
             {
                 abbreviation: "CHA",
                 fullName: "Charlotte Hornets",
-                nameForIconUrl: "hornets"
+                nameForIconUrl: "cha_hornets"
             },
             {
                 abbreviation: "MIA",
